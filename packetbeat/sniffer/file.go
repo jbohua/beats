@@ -101,7 +101,12 @@ func (h *fileHandler) ReadPacketData() ([]byte, gopacket.CaptureInfo, error) {
 	}
 
 	h.lastTS = ci.Timestamp
-	ci.Timestamp = time.Now()
+
+	// Preserves the timestamp inside input file
+	if ci.Timestamp.IsZero() {
+		ci.Timestamp = time.Now()
+	}
+
 	return data, ci, nil
 }
 
